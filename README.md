@@ -28,11 +28,11 @@ git clone https://github.com/qtian13/budget-tracker.git
 ## Features
 
 * When user is on Budget App without an internet connection and inputs a withdrawal or deposit, that will be shown on the page, and added to their transaction history when their connection is back online.
-
+  <img src="./public/assets/images/demo.gif" alt="demo-gif" width="500">
 ## Deployed Page
 The application is deployed on Heroku
 
-Check the page: []()
+Check the page: [https://aqueous-castle-38215.herokuapp.com/](https://aqueous-castle-38215.herokuapp.com/)
 
 ## Author
 Qiushuang Tian
