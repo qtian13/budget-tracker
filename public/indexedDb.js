@@ -15,7 +15,7 @@ function useIndexedDb(databaseName, storeName, method, object) {
 
     request.onupgradeneeded = function(e) {
       const db = request.result;
-      db.createObjectStore(storeName, { keyPath: "_id" });
+      db.createObjectStore(storeName, { autoIncrement: true });
     };
 
     request.onerror = function(e) {
@@ -39,12 +39,24 @@ function useIndexedDb(databaseName, storeName, method, object) {
         };
       } else if (method === "delete") {
         store.delete(object._id);
+      } else if (method === "clear") {
+        store.clear();
+      } else if (method === "add") {
+        console.log(object);
+        console.log(store);
+        store.add(object);
       }
       tx.oncomplete = function() {
         db.close();
       };
     };
   });
+}
+
+function saveRecord(transaction) {
+  useIndexedDb("budget", "transactions", "add", transaction)
+    .then(result => console.log(result))
+    .catch(err => console.log(err));
 }
 
 function updateDatabase() {
@@ -65,18 +77,14 @@ function updateDatabase() {
               errorEl.textContent = "Missing Information";
             }
             else {
-              // clear form
-              nameEl.value = "";
-              amountEl.value = "";
+              // fetch success, clear indexedDB
+              console.log("data was updated to server db successfully");
+              useIndexedDb("budget", "transactions", "clear");
             }
           })
           .catch(err => {
-            // fetch failed, so save in indexed db
-            saveRecord(transaction);
-        
-            // clear form
-            nameEl.value = "";
-            amountEl.value = "";
+            // fetch failed
+            console.log(err);
           });
       }
     })
